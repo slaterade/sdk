@@ -1,7 +1,8 @@
 # sdk
-Personal containerized software development kit
 
-Added github actions
+[![ci](https://github.com/slaterade/sdk/actions/workflows/docker-image.yml/badge.svg)](https://github.com/slaterade/sdk/actions/workflows/docker-image.yml)
+
+personal containerized software development kit
 
 # notes
 
