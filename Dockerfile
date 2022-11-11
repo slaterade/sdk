@@ -55,13 +55,16 @@ ENV LANG en_US.UTF-8
 ENV LC_ALL C.UTF-8
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" ||true \
-    && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    && git clone --depth 1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k \
+    && git clone --depth 1 https://github.com/wbthomason/packer.nvim /home/$USERNAME/.local/share/nvim/site/pack/packer/start/packer.nvim \
+    && git clone --depth 1 https://github.com/slaterade/neovim-config /home/$USERNAME/.config/nvim
 
 COPY .p10k.zsh /home/$USERNAME/
 COPY .zshrc /home/$USERNAME/
 
 COPY --from=builder /usr/local /usr/local
 
-RUN $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install
+RUN $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install \
+    && nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 CMD ["/usr/bin/zsh"]
