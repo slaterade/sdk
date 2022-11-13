@@ -31,11 +31,10 @@ FROM base
 RUN apt-get update && \
     apt-get upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    build-essential \
-    cmake \
     curl \
     git \
     locales \
+    python3 \
     sudo \
     tmux \
     unzip \
@@ -61,10 +60,12 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 
 COPY .p10k.zsh /home/$USERNAME/
 COPY .zshrc /home/$USERNAME/
+COPY .tmux.conf /home/$USERNAME/
 
 COPY --from=builder /usr/local /usr/local
 
 RUN $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install \
     && nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
-CMD ["/usr/bin/zsh"]
+CMD ["/usr/bin/zsh", "-c", "cd ~/ && /usr/bin/zsh"]
+
