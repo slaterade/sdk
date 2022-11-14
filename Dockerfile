@@ -22,7 +22,7 @@ RUN apt-get update && \
 RUN git clone https://github.com/neovim/neovim \
     && cd neovim \
     && git checkout stable \
-    && make CMAKE_BUILD_TYPE=RelWithDebInfo \
+    && make CMAKE_BUILD_TYPE=Release \
     && make install
 
 # back to our regularly scheduled stage
@@ -63,8 +63,9 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 COPY .p10k.zsh /home/$USERNAME/
 COPY .zshrc /home/$USERNAME/
 COPY .tmux.conf /home/$USERNAME/
-
 COPY --from=builder /usr/local /usr/local
+
+RUN touch /home/$USERNAME/.gitconfig
 
 RUN $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install \
     && nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'

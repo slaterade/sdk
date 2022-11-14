@@ -6,5 +6,5 @@ else
     WORKDIR=$1
 fi
 echo "sdk -> $WORKDIR ..."
-docker run --rm -it -v ${WORKDIR}:${WORKDIR} slaterade/sdk:latest /usr/bin/zsh -c "cd ${WORKDIR} && nvim ."
+docker run --rm -it -v ${WORKDIR}:${WORKDIR} -v ${HOME}/.gitconfig:/home/slaterade/.gitconfig slaterade/sdk:latest /usr/bin/zsh -c "cd ${WORKDIR} && nvim ."
 
