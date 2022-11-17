@@ -22,7 +22,7 @@ RUN apt-get update && \
 RUN git clone https://github.com/neovim/neovim \
     && cd neovim \
     && git checkout stable \
-    && make CMAKE_BUILD_TYPE=RelWithDebInfo \
+    && make CMAKE_BUILD_TYPE=Release \
     && make install
 
 # back to our regularly scheduled stage
@@ -32,16 +32,29 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     curl \
+    && curl -fsSL https://deb.nodesource.com/setup_19.x | bash -
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    black \
+    build-essential \
+    fd-find \
     git \
     locales \
+    nodejs \
     python3 \
-    black \
+    python3-pip \
+    ripgrep \
     sudo \
     tmux \
     unzip \
     zsh
 
-ARG USERNAME=slaterade
+RUN python3 -m pip install -U pip \
+    && python3 -m pip install neovim
+
+RUN npm install -g pyright typescript typescript-language-server
+
+ARG USERNAME=yossarian
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -63,7 +76,6 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 COPY .p10k.zsh /home/$USERNAME/
 COPY .zshrc /home/$USERNAME/
 COPY .tmux.conf /home/$USERNAME/
-
 COPY --from=builder /usr/local /usr/local
 
 RUN $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install \
