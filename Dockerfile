@@ -25,6 +25,14 @@ RUN git clone https://github.com/neovim/neovim \
     && make CMAKE_BUILD_TYPE=Release \
     && make install
 
+RUN git clone --depth=1 https://github.com/sumneko/lua-language-server \
+    && cd lua-language-server \
+    && git submodule update --depth 1 --init --recursive \
+    && cd 3rd/luamake \
+    && ./compile/install.sh \
+    && cd ../.. \
+    && ./3rd/luamake/luamake rebuild
+
 # back to our regularly scheduled stage
 FROM base
 
@@ -77,6 +85,14 @@ COPY .p10k.zsh /home/$USERNAME/
 COPY .zshrc /home/$USERNAME/
 COPY .tmux.conf /home/$USERNAME/
 COPY --from=builder /usr/local /usr/local
+COPY --from=builder /lua-language-server/bin /opt/lua-language-server/bin
+COPY --from=builder /lua-language-server/locale /opt/lua-language-server/locale
+COPY --from=builder /lua-language-server/meta /opt/lua-language-server/meta
+COPY --from=builder /lua-language-server/script /opt/lua-language-server/script
+COPY --from=builder /lua-language-server/*.lua /opt/lua-language-server
+
+RUN sudo mkdir -p /opt/lua-language-server/log/cache \
+    && sudo chmod 777 /opt/lua-language-server/log/cache
 
 RUN $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install \
     && nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
