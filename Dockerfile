@@ -60,7 +60,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 RUN python3 -m pip install -U pip \
     && python3 -m pip install neovim
 
-RUN npm install -g pyright typescript typescript-language-server
+RUN npm install -g pyright typescript typescript-language-server dockerfile-language-server-nodejs
 
 ARG USERNAME=yossarian
 ARG USER_UID=1000
