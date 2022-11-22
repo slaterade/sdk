@@ -1,11 +1,25 @@
 #!/bin/sh
 
-if test -z "$1"
-then
-    WORKDIR=$(pwd)
-else
-    WORKDIR=$1
-fi
+WORKDIR=$(pwd)
+
+function show_help {
+    echo "SDK Launcher Script"
+    echo ""
+    echo "USAGE: $0 todo"
+    echo ""
+}
+
+while getopts ":d:xhc:uw" option; do
+    case $option in
+        h) # help a friend 
+            show_help
+            exit 0;;
+        /?) # catch all
+            show_help
+            exit 1;;
+    esac
+done
+
 echo "sdk -> $WORKDIR ..."
 docker run --rm -it -v ${WORKDIR}:${WORKDIR} slaterade/sdk:latest /usr/bin/zsh -c "cd ${WORKDIR} && nvim ."
 
