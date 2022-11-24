@@ -1,16 +1,31 @@
 #!/bin/sh
 
 WORKDIR=$(pwd)
+WORKCMD="nvim ."
+WORKIMG="slaterade/sdk"
+WORKTAG="latest"
 
 function show_help {
     echo "SDK Launcher Script"
     echo ""
-    echo "USAGE: $0 todo"
+    echo "USAGE: $0 -d <directory> -c <command> -i <image> -t <tag>"
+    echo "  -d <directory> \tSpecify a directory to mount (defaults to pwd) [optional]"
+    echo "  -c <command>   \tCommand to execute in container (defaults to ${WORKCMD}) [optional]"
+    echo "  -i <image>     \tSpecify an image to use (defaults to ${WORKIMG}) [optional]"
+    echo "  -t <tag>       \tSpecify an image tag to use (defaults to ${WORKTAG}) [optional]"
     echo ""
 }
 
-while getopts ":d:xhc:uw" option; do
+while getopts ":d:hc:i:t:" option; do
     case $option in
+        d) # mount specific directory
+          WORKDIR=${OPTARG};;
+        c) # run a specific command
+          WORKCMD=${OPTARG};;
+        i) # image name
+          WORKIMG=${OPTARG};;
+        t) # image tag
+          WORKTAG=${OPTARG};;
         h) # help a friend 
             show_help
             exit 0;;
@@ -20,6 +35,6 @@ while getopts ":d:xhc:uw" option; do
     esac
 done
 
-echo "sdk -> $WORKDIR ..."
-docker run --rm -it -v ${WORKDIR}:${WORKDIR} slaterade/sdk:latest /usr/bin/zsh -c "cd ${WORKDIR} && nvim ."
+echo "sdk -> dir: $WORKDIR -> cmd: $WORKCMD"
+docker run --rm -it -v ${WORKDIR}:${WORKDIR} ${WORKIMG}:${WORKTAG} /usr/bin/zsh -c "cd ${WORKDIR} && ${WORKCMD}"
 

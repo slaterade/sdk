@@ -7,13 +7,14 @@ personal containerized software development kit
 # notes
 
 ```bash
-docker build -t slaterade/sdk:local .
+docker build -t slaterade/sdk:latest .
 ```
 
 ```bash
-docker run --rm -it slaterade/sdk:local
+docker run --rm -it slaterade/sdk:latest
 ```
 
-test
-
+```bash
+sudo cp sdk /usr/local/bin/sdk
+```
 

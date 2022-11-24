@@ -92,11 +92,11 @@ COPY --from=builder /lua-language-server/script /opt/lua-language-server/script
 COPY --from=builder /lua-language-server/*.lua /opt/lua-language-server
 
 RUN sudo mkdir -p /opt/lua-language-server/log/cache \
-    && sudo chmod 777 /opt/lua-language-server/log/cache
-
-RUN $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install \
+    && sudo chmod 777 /opt/lua-language-server/log/cache \
+    && $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install \
     && nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' \
-    && nvim --headless -c "TSInstallSync! bash c cmake cpp dockerfile javascript json lua python toml typescript yaml" -c q
+    && nvim --headless -c "TSInstallSync! bash c cmake cpp dockerfile javascript json lua python toml typescript yaml" -c q \
+    && nvim --headless -c "TSUpdateSync" -c -q
 
 CMD ["/usr/bin/zsh", "-c", "cd ~/ && /usr/bin/zsh"]
 
