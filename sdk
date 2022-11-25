@@ -35,6 +35,9 @@ while getopts ":d:hc:i:t:" option; do
     esac
 done
 
-echo "sdk -> dir: $WORKDIR -> cmd: $WORKCMD"
+echo " -> img: $WORKIMG"
+echo " -> tag: $WORKTAG"
+echo " -> dir: $WORKDIR"
+echo " -> cmd: $WORKCMD"
 docker run --rm -it -v ${WORKDIR}:${WORKDIR} ${WORKIMG}:${WORKTAG} /usr/bin/zsh -c "cd ${WORKDIR} && ${WORKCMD}"
 

@@ -60,7 +60,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 RUN python3 -m pip install -U pip \
     && python3 -m pip install neovim
 
-RUN npm install -g pyright typescript typescript-language-server dockerfile-language-server-nodejs
+RUN npm install -g neovim pyright typescript typescript-language-server dockerfile-language-server-nodejs
 
 ARG USERNAME=yossarian
 ARG USER_UID=1000
@@ -95,7 +95,7 @@ RUN sudo mkdir -p /opt/lua-language-server/log/cache \
     && sudo chmod 777 /opt/lua-language-server/log/cache \
     && $HOME/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install \
     && nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' \
-    && nvim --headless -c "TSInstallSync! bash c cmake cpp dockerfile javascript json lua python toml typescript yaml" -c q \
+    && nvim --headless -c "TSInstallSync! bash c cmake cpp dockerfile help javascript json lua python toml typescript vim yaml" -c q \
     && nvim --headless -c "TSUpdateSync" -c -q
 
 CMD ["/usr/bin/zsh", "-c", "cd ~/ && /usr/bin/zsh"]
