@@ -39,5 +39,5 @@ echo " -> img: $WORKIMG"
 echo " -> tag: $WORKTAG"
 echo " -> dir: $WORKDIR"
 echo " -> cmd: $WORKCMD"
-docker run --rm -it -v ${WORKDIR}:${WORKDIR} ${WORKIMG}:${WORKTAG} /usr/bin/zsh -c "cd ${WORKDIR} && ${WORKCMD}"
+docker run --rm -it -v ${WORKDIR}:${WORKDIR} ${WORKIMG}:${WORKTAG} zsh -c "cd ${WORKDIR} && ${WORKCMD}"
 

@@ -11,10 +11,10 @@ docker build -t slaterade/sdk:latest .
 ```
 
 ```bash
-docker run --rm -it slaterade/sdk:latest
+sudo cp sdk /usr/local/bin/sdk
 ```
 
 ```bash
-sudo cp sdk /usr/local/bin/sdk
+sdk -h
 ```
 
